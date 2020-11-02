@@ -14,7 +14,7 @@ var con = mysql.createConnection({
     password: "toor",
     database: "urlgenerator"
 });
-
+console.log("Program Booted Successfully.");
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -31,7 +31,7 @@ function addhttp(url) {
 
 app.get('/url/*', (req, res) => {
     console.log("requested");
-    
+
     const slug = encodeURIComponent(req.params[0]);
     // const slug = req.params[0];
     con.query(`SELECT * FROM urlgenerator where slug = '${slug}'`, function (err, result, fields) {
@@ -42,7 +42,7 @@ app.get('/url/*', (req, res) => {
             return;
         }
         s = result[0].url;
-       
+
         res.redirect(addhttp(s));
 
     });
@@ -138,7 +138,7 @@ app.post('/create', (req, res) => {
     }
 
 
-    
+
     // console.log(nanoid());
 })
 
