@@ -1,11 +1,12 @@
 # urlShortener
 
-A quick and dirty URL shortener with a delete option powered by a secret key generated when the url is created.
-to run, use `node .`
-The packages required are:
+A quick and dirty URL shortener copied by the one built at [twitch.tv/codinggarden](https://www.twitch.tv/codinggarden) but using SQlite and with some additional features I built myself
+
+Packages uses are:
+
 ```
-express js
-mySQL
-nanoid
-dotenv
+ExpressJS
+Nanoid
+sqlite + sqlie3
+uuid
 ```

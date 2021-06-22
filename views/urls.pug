@@ -1,0 +1,17 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Bootstrap CSS
+    link(rel='stylesheet' href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css')
+    title URL Shortener!
+  body
+    .w-100.container.m-auto.mt-5.max-w-2xl.px-8.pt-6.pb-8.mb-4
+      h1.text-2xl.text-gray-500.text-center.font-semibold.mx-auto(class='md:text-5xl') All URLs
+      #table
+  script(src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js") 
+  script(src='/assets/js/urls.js')

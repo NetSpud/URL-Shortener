@@ -1,0 +1,31 @@
+{
+  "name": "url-generator",
+  "version": "1.0.0",
+  "description": "A quick and dirty URL shortener with a delete option powered by a secret key generated when the url is created.\r to run, use `node .`\r The packages required are:\r ```\r express js\r mySQL\r nanoid\r dotenv\r ```",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nanoid": "^3.1.23",
+    "pug": "^3.0.2",
+    "sqlite": "^4.0.23",
+    "sqlite3": "^5.0.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NetSpud/Node-urlShortener.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NetSpud/Node-urlShortener/issues"
+  },
+  "homepage": "https://github.com/NetSpud/Node-urlShortener#readme"
+}

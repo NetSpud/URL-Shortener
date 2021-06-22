@@ -1,0 +1,55 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Bootstrap CSS
+    link(rel='stylesheet' href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
+    title URL Shortener!
+  body
+    .w-100.container.m-auto.mt-5.h-screen.max-w-2xl
+      h1.text-2xl.text-gray-500.text-center.font-semibold.mx-auto(class='md:text-5xl') URL Shortener
+      .grid.gap-5.grid-cols-2.px-5
+        form#createForm.bg-white.shadow-lg.rounded.px-8.pt-7.pb-8.mb-4.col-span-2
+          h2.text-gray-500.text-center.font-semibold.mx-auto Create URL
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
+              | URL
+            input#url.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='url' placeholder='google.com')
+          .mb-2
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='slug')
+              | Slug (Optional)
+            input#slug.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='mycustomurlslug')
+          .flex.items-center.justify-between
+            button#createBtn.bg-blue-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
+              | Create
+        form#deleteForm.bg-gray-100.shadow-lg.rounded.px-8.pt-6.pb-8.mb-4.col-span-2(class='sm:col-span-2 md:col-span-1')
+          h2.text-gray-500.text-center.font-semibold.mx-auto Delete URL
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
+              | URL Secret
+            input#secret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
+          #delResult
+          .flex.items-center.justify-between
+            button.bg-red-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
+              | Delete
+        form#updateForm.bg-white.shadow-lg.rounded.px-8.pt-6.pb-8.mb-4.col-span-2(class='sm:col-span-2 md:col-span-1')
+          h2.text-gray-500.text-center.font-semibold.mx-auto Delete URL
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='newURL')
+              | New URL
+            input#newURL.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
+              | URL Secret
+            input#urlSecret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
+          #updateResult
+          .flex.items-center.justify-between
+            button.bg-blue-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
+              | Update
+            //- a.inline-block.align-baseline.font-bold.text-sm.text-blue-500(class='hover:text-blue-800' href='https://github.com/netspud' target='_blank')
+            //-   i.fab.fa-github.fa-2x
+      
+  script(src='/assets/js/index.js')

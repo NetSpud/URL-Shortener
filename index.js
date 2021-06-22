@@ -1,147 +1,165 @@
-const express = require('express');
+const express = require("express");
 const { nanoid } = require("nanoid");
-const bodyParser = require('body-parser');
-const dotenv = require("dotenv");
-const mysql = require("mysql");
+const { v4: uuidv4 } = require("uuid");
+const sqlite3 = require("sqlite3");
+const { open } = require("sqlite");
 
 const app = express();
-const port = 3000;
-
-
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "toor",
-    database: "urlgenerator"
-});
-console.log("Program Booted Successfully.");
+// await db.exec(
+//   "CREATE TABLE data (id varchar, URL text, slug varchar, secret varchar, PRIMARY KEY (id))"
+// );
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
+app.set("view engine", "pug");
 
+const addhttp = (url) => {
+  if (!/^(?:f|ht)tps?:\/\//.test(url)) {
+    url = "http://" + url;
+  }
+  return url;
+};
 
-function addhttp(url) {
-    if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
-        url = "http://" + url;
-    }
-    return url;
-}
-
-
-
-app.get('/url/*', (req, res) => {
-    console.log("requested");
-
-    const slug = encodeURIComponent(req.params[0]);
-    // const slug = req.params[0];
-    con.query(`SELECT * FROM urlgenerator where slug = '${slug}'`, function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-        if(result.length < 1) {
-            res.send("URL Not Found.");
-            return;
-        }
-        s = result[0].url;
-
-        res.redirect(addhttp(s));
-
-    });
-
-
+app.get("/", (req, res) => {
+  res.render("index");
 });
-app.delete('/delete', (req, res) => {
-    console.log("delete request received.");
-    var sql = `DELETE FROM urlgenerator WHERE secret = '${req.body.token}'`;
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Number of records deleted: " + result.affectedRows);
-    });
-    res.json({
-        "success": "Delete Successful",
-    });
-
+app.get("/urls", (req, res) => {
+  res.render("urls");
 });
 
-app.post('/list', (req, res) => {
-console.log("postedLIST");
-    con.query("SELECT * FROM urlgenerator", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-        res.send(result);
-
-
-
-    });
-
-
+app.get("/all", (req, res) => {
+  open({
+    filename: "./database.db",
+    driver: sqlite3.Database,
+  })
+    .then((db) => {
+      return db.all("select * from data");
+    })
+    .then((d) => {
+      console.log(d);
+      d.map((x) => (x.URL = addhttp(x.URL)));
+      res.json(d);
+    })
+    .catch((err) => res.json(err));
 });
 
+app.post("/create", (req, res) => {
+  const secret = nanoid(16);
 
+  if (req.body.url === undefined || req.body.url === "") {
+    res.json({ err: `Please provide the URL` });
+    return;
+  }
+  if (req.body.slug === undefined || req.body.slug === "") {
+    res.json({ err: `Please provide your URL slug` });
+    return;
+  }
 
-app.post('/create', (req, res) => {
-    let url = req.body.url.trim();
-    let slug = req.body.slug.trim();
-    const secret = nanoid(20);
-    var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-    var regex = new RegExp(expression);
-    var t = url;
+  const checkExists = (slug) => {
+    return new Promise((resolve, reject) => {
+      open({
+        filename: "./database.db",
+        driver: sqlite3.Database,
+      })
+        .then((db) => {
+          return db.all("select id from data where slug = ?", slug);
+        })
+        .then((d) => {
+          if (d.length > 0) {
+            reject(`Slug already in use`);
+          } else {
+            resolve(true);
+          }
+        })
+        .catch((err) => reject(err));
+    });
+  };
 
-    if (t.match(regex)) {
-        console.log(`valid url for ${url}`);
-        if(slug === "") {
-            slug = nanoid();
-        }
+  const addNew = () => {
+    return new Promise((resolve, reject) => {
+      open({
+        filename: "./database.db",
+        driver: sqlite3.Database,
+      })
+        .then((db) => {
+          return db.run(
+            "insert into data (id, url, slug, secret) values (?,?,?,?)",
+            uuidv4(),
+            req.body.url,
+            req.body.slug,
+            secret
+          );
+        })
 
+        .then(() => {
+          resolve(true);
+        })
+        .catch((err) => reject(err));
+    });
+  };
 
+  checkExists(req.body.slug)
+    .then(() => {
+      return addNew(req.body.slug, req.body.url);
+    })
+    .then((d) => {
+      console.log(d);
+      res.json({ success: `Action completed successfully` });
+    })
+    .catch((err) => res.json({ err: String(err) }));
+});
+app.delete("/delete", (req, res) => {
+  if (req.body.secret === undefined || req.body.secret === "") {
+    res.json({ err: `Secret not provided - unable to delete slug` });
+  }
+  (async () => {
+    // open the database
+    open({
+      filename: "./database.db",
+      driver: sqlite3.Database,
+    })
+      .then((db) => {
+        return db.run("delete from data where secret = ?", req.body.secret);
+      })
+      .then(() => {
+        res.json({ success: `Deleted URL successfully!` });
+      })
+      .catch((err) => console.log(err));
+  })();
+});
+app.get("/url/:slug", (req, res) => {
+  const getDataIfExists = (slug) => {
+    return new Promise((resolve, reject) => {
+      open({
+        filename: "./database.db",
+        driver: sqlite3.Database,
+      })
+        .then((db) => {
+          return db.all("select URL from data where slug = ?", slug);
+        })
 
+        .then((d) => {
+          if (d.length > 0) {
+            console.log(d);
+            resolve(d[0]);
+          }
+        })
+        .catch((err) => reject(err));
+    });
+  };
 
+  getDataIfExists(req.params.slug)
+    .then((d) => {
+      console.log(d);
+      res.redirect(addhttp(d.URL));
+    })
+    .catch((err) => {
+      res.json({ err });
+    });
+});
 
-        // con.connect(function (err) {
-            // if (err) throw err;
-            con.query(`SELECT count(*) FROM urlgenerator where slug = '${slug}'`, function (err, result, fields) {
-                // if (err) throw err;
-                console.log(result);
-                if(result[0]['count(*)'] === 1) {
-                    console.log("slug in use, please use different slug.");
-                    res.send({
-                        "err": "X001: slug in use, please use different slug."
-                    });
-
-                } else {
-                    // con.connect(function (err) {
-                        if (err) throw err;
-                        console.log("Connected!");
-                    var sql = `INSERT INTO urlgenerator (url, slug, secret) VALUES ('${url}', '${slug}', '${secret}')`;
-                        con.query(sql, function (err, result) {
-                            if (err) throw err;
-                            console.log("1 record inserted");
-                        });
-                    // });
-
-
-                    res.json({
-                        "url": url,
-                        "slug": slug,
-                        "secret": secret
-                    });
-
-
-                }
-            });
-
-
-    } else {
-        console.log(`Invalid url for "${url}". Please try again - console`);
-        res.json({
-            "err": `X002: Invalid url for ${url}`,
-        });
-    }
-
-
-
-    // console.log(nanoid());
-})
+const port = 3000;
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+  console.log(`Example app listening at http://localhost:${port}`);
+});
