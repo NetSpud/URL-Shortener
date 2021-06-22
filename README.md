@@ -22,3 +22,7 @@ Download all the files into a folder, then run `npm install`
 
 Finally, run the `index.js` file with `node index.js`.
 All data is stored in the `database.db` file.
+
+## Demo
+
+Check it out here! [https://url-generator-netspud.herokuapp.com](https://url-generator-netspud.herokuapp.com)
