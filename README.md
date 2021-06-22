@@ -9,4 +9,15 @@ ExpressJS
 Nanoid
 sqlite + sqlie3
 uuid
+pug
 ```
+
+## Usage
+
+Requires [node.js](https://nodejs.org/en/)
+
+Project was built using `v14.15.3`.
+
+Download all the files into a folder, then run `npm install`
+Finally, run the `index.js` file with `node index.js`.
+All data is stored in the `database.db` file.
