@@ -32,7 +32,32 @@ document.getElementById("createForm").addEventListener("submit", (e) => {
           }
           btn.innerHTML = "Create";
         }, 3000);
+        document.getElementById("createResult").innerHTML = "";
         document.getElementById("createForm").reset();
+      } else {
+        document.getElementById("createResult").innerHTML = d.err;
+      }
+    });
+});
+document.getElementById("updateForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const options = {
+    method: "DELETE",
+    body: JSON.stringify({
+      secret: document.getElementById("secret").value,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  fetch("/delete", options)
+    .then((d) => d.json())
+    .then((d) => {
+      console.log(d);
+      if (d.err) {
+        document.getElementById("delResult").innerHTML = d.err;
+      } else {
+        document.getElementById("delResult").innerHTML = d.success;
       }
     });
 });

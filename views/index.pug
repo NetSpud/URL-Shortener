@@ -17,11 +17,12 @@ html(lang='en')
           .mb-4
             label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
               | URL
-            input#url.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='url' placeholder='google.com')
+            input#url.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='url' placeholder='google.com' required)
           .mb-2
             label.block.text-gray-700.text-sm.font-bold.mb-2(for='slug')
-              | Slug (Optional)
-            input#slug.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='mycustomurlslug')
+              | Slug
+            input#slug.shadow-md.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='mycustomurlslug' required)
+          #createResult.text-red-500
           .flex.items-center.justify-between
             button#createBtn.bg-blue-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
               | Create
@@ -30,8 +31,8 @@ html(lang='en')
           .mb-4
             label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
               | URL Secret
-            input#secret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
-          #delResult
+            input#secret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx' required)
+          #delResult.text-red-500
           .flex.items-center.justify-between
             button.bg-red-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
               | Delete
@@ -40,16 +41,19 @@ html(lang='en')
           .mb-4
             label.block.text-gray-700.text-sm.font-bold.mb-2(for='newURL')
               | New URL
-            input#newURL.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
+            input#newURL.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx' required)
           .mb-4
             label.block.text-gray-700.text-sm.font-bold.mb-2(for='url')
               | URL Secret
-            input#urlSecret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx')
-          #updateResult
+            input#urlSecret.shadow-lg.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(class='focus:outline-none focus:shadow-outline' type='text' placeholder='xxxxxxxxxxxxxxxx' required)
+          #updateResult.text-red-500
           .flex.items-center.justify-between
             button.bg-blue-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-700 focus:outline-none focus:shadow-outline' type='submit')
               | Update
             //- a.inline-block.align-baseline.font-bold.text-sm.text-blue-500(class='hover:text-blue-800' href='https://github.com/netspud' target='_blank')
             //-   i.fab.fa-github.fa-2x
-      
+      p.text-center.text-gray-500.text-xs.fixed.left-0.bottom-0.w-full
+        a.underline.text-black(href='https://github.com/netspud' target='_blank')
+          i.fab.fa-github.fa-2x
+
   script(src='/assets/js/index.js')
