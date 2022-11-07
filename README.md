@@ -7,7 +7,7 @@ Packages uses are:
 ```
 ExpressJS
 Nanoid
-sqlite + sqlie3
+sqlite + sqlite3
 uuid
 pug
 ```
